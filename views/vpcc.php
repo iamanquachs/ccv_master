@@ -14,32 +14,22 @@
                         <h6 class="m-0 font-weight-bold text-primary">Danh sách Khách hàng</h6>
                         <button data-toggle="modal" data-target="#form_add" class="btn btn-primary">Thêm tổ chức</button>
                     </div>
-                    <div class="vpcc_filter_div" style="display: flex; justify-content: center; align-items: center;">
-                        <input onkeyup="vpcc_search()" id="tenvpcc_search" class="Input_Style" type="text" placeholder="Tên, số điện thoại" autocomplete="FALSE">
-                        <div id="datepicker_vpcc" class="input-group date datepicker_vpcc" data-date-format="dd/mm/yyyy">
-                            <input class="form-control vpcc_tungay" value="<?= date('d/m/Y', strtotime('-30 day', strtotime(date('Y-m-d')))); ?>" type="text"> <span class="input-group-addon"></span>
+                    <div id="form_filter">
+                        <div class="vpcc_filter_div" style="display: flex; justify-content: center; align-items: center;">
+                            <input id="tenvpcc_search" class="Input_Style" type="text" placeholder="Tên" autocomplete="FALSE">
+                            <input id="dienthoai_search" class="Input_Style" type="text" placeholder="Số điện thoại" autocomplete="FALSE">
+                            <div class="input-group date datepicker_vpcc" data-date-format="dd/mm/yyyy">
+                                <input id="tungay" class="form-control vpcc_tungay" placeholder="Từ ngày" value="<?= date('d/m/Y', strtotime('-30 day', strtotime(date('Y-m-d')))); ?>" type="text"> <span class="input-group-addon"></span>
+
+                            </div>
+                            <div class="input-group date datepicker_vpcc" data-date-format="dd/mm/yyyy">
+                                <input id="denngay" class="form-control vpcc_denngay" placeholder="Đến Ngày" name="denngay" value="<?= date('d/m/Y'); ?>" type="text"> <span class="input-group-addon"></span>
+                            </div>
+                            <button onclick="vpcc_filter()" class="btn btn-primary">Tìm kiếm</button>
 
                         </div>
-                        <div id="datepicker_vpcc2" class="input-group date datepicker_vpcc" data-date-format="dd/mm/yyyy">
-                            <input class="form-control vpcc_denngay" name="denngay" value="<?= date('d/m/Y'); ?>" type="text"> <span class="input-group-addon"></span>
-                        </div>
-                        <select class="form-control" id="trangthai_vpcc_loc">
-                            <option value="">Trạng thái</option>
-                            <?php
-                            foreach ($list_trangthai as $r) { ?>
-                                <option value="<?= $r->msloai ?>"><?= $r->giatri ?></option>
-                            <?php }
-                            ?>
-                        </select>
-                        <select class="form-control" id="msdn_vpcc_loc">
-                            <option value="">Nhân viên</option>
-                            <?php
-                            foreach ($list_user as $r) { ?>
-                                <option value="<?= $r->msdn ?>"><?= $r->hoten ?></option>
-                            <?php }
-                            ?>
-                        </select>
                     </div>
+
                     <div class="card-body card_body_vpcc">
                         <div id="vpcc_table_header" class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">

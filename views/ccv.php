@@ -15,32 +15,22 @@
                         <h6 class="m-0 font-weight-bold text-primary">Danh sách Công chứng viên</h6>
                         <button data-toggle="modal" data-target="#form_add" class="btn btn-primary">Thêm công chứng viên</button>
                     </div>
-                    <div class="ccv_filter_div" style="display: flex; justify-content: center; align-items: center;">
-                        <input onkeyup="ccv_search()" id="tenccv_search" class="Input_Style" type="text" placeholder="Tên, số điện thoại" autocomplete="FALSE">
-                        <div id="datepicker_ccv" class="input-group date datepicker_ccv" data-date-format="dd/mm/yyyy">
-                            <input class="form-control ccv_tungay" value="<?= date('d/m/Y', strtotime('-30 day', strtotime(date('Y-m-d')))); ?>" type="text"> <span class="input-group-addon"></span>
+                    <div id="form_filter">
+                        <div class="ccv_filter_div" style="display: flex; justify-content: center; align-items: center;">
+                            <input id="tenccv_search" class="Input_Style" type="text" placeholder="Tên" autocomplete="FALSE">
+                            <input id="dienthoai_search" class="Input_Style" type="text" placeholder="Số điện thoại" autocomplete="FALSE">
+                            <div id="datepicker_ccv" class="input-group date datepicker_ccv" data-date-format="dd/mm/yyyy">
+                                <input id="tungay" class="form-control ccv_tungay" placeholder="Từ ngày" value="<?= date('d/m/Y', strtotime('-30 day', strtotime(date('Y-m-d')))); ?>" type="text"> <span class="input-group-addon"></span>
+
+                            </div>
+                            <div id="datepicker_ccv2" class="input-group date datepicker_ccv" data-date-format="dd/mm/yyyy">
+                                <input id="denngay" class="form-control ccv_denngay" placeholder="Đến Ngày" name="denngay" value="<?= date('d/m/Y'); ?>" type="text"> <span class="input-group-addon"></span>
+                            </div>
+                            <button onclick="ccv_filter()" class="btn btn-primary">Tìm kiếm</button>
 
                         </div>
-                        <div id="datepicker_ccv2" class="input-group date datepicker_ccv" data-date-format="dd/mm/yyyy">
-                            <input class="form-control ccv_denngay" name="denngay" value="<?= date('d/m/Y'); ?>" type="text"> <span class="input-group-addon"></span>
-                        </div>
-                        <select class="form-control" id="trangthai_ccv_loc">
-                            <option value="">Trạng thái</option>
-                            <?php
-                            foreach ($list_trangthai as $r) { ?>
-                                <option value="<?= $r->msloai ?>"><?= $r->giatri ?></option>
-                            <?php }
-                            ?>
-                        </select>
-                        <select class="form-control" id="msdn_ccv_loc">
-                            <option value="">Nhân viên</option>
-                            <?php
-                            foreach ($list_user as $r) { ?>
-                                <option value="<?= $r->msdn ?>"><?= $r->hoten ?></option>
-                            <?php }
-                            ?>
-                        </select>
                     </div>
+
                     <div class="card-body card_body_ccv">
                         <div id="ccv_table_header" class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -70,7 +60,7 @@
                 <div class="col-12">
                     <div class="card-header py-3 card_header_ccv">
                         <h6 class="m-0 font-weight-bold text-primary">Hoạt động Công chứng viên</h6>
-                        <button id="btn_add_chitiet" data-toggle="modal" data-target="#form_chitiet_add" class="btn btn-info hidden">Thêm nhật ký</button>
+                        <button id="btn_add_chitiet" data-toggle="modal" data-target="#form_chitiet_add" class="btn btn-info hidden">Thêm hoạt động</button>
                     </div>
                     <div class="card-body card_body_ccv">
                         <div id="ccv_table_line" class="table-responsive">
@@ -82,11 +72,10 @@
                                         <th>Mã tổ chức</th>
                                         <th>Khen thưởng</th>
                                         <th>Kỷ luật</th>
+                                        <th>Loại kỷ luật</th>
                                         <th>Hội phí</th>
                                         <th>Ngày</th>
-                                        <th>Ghi chú</th>
                                         <th>Chỉnh</th>
-                                        <th>Xóa</th>
                                     </tr>
                                 </thead>
                                 <tbody class="chitiet_ccv_tbody">
@@ -454,73 +443,69 @@
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
+                            <input id="tenccv_chitiet_td" class="field__input" placeholder="Vui lòng nhập chi tiết tên công chứng viên" readonly>
+                            <span class="field__label-wrap">
+                                <span class="field__label">Tên Công Chứng Viên</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input id="khenthuong_chitiet_td" class="field__input" placeholder="Vui lòng nhập chi tiết khen thưởng">
+                            <span class="field__label-wrap">
+                                <span class="field__label">Khen Thưởng</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input id="kyluat_chitiet_td" class="field__input" placeholder="Vui lòng nhập Kỷ luật">
+                            <span class="field__label-wrap">
+                                <span class="field__label">Kỷ luật</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input id="loaikyluat_chitiet_td" class="field__input" placeholder="Vui lòng nhập Loại kỷ luật">
+                            <span class="field__label-wrap">
+                                <span class="field__label">Loại kỷ luật</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input id="hoiphi_chitiet_td" class="field__input" placeholder="Vui lòng nhập Hội phí">
+                            <span class="field__label-wrap">
+                                <span class="field__label">Hội phí</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
                             <input type="hidden" id="ctkh_mskh_edit">
                             <input type="hidden" id="ctkh_msct_edit">
-                            <input id="ctkh_ngay_edit" value="<?= date('d/m/Y') ?>" class="field__input txt_date" data-date-format="dd-mm-yy" type="text" placeholder="Ngày" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask="" im-insert="false">
+                            <input id="ngay_chitiet_td" value="<?= date('d/m/Y') ?>" class="field__input txt_date" data-date-format="dd-mm-yy" type="text" placeholder="Ngày" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask="" im-insert="false">
                             <span class="field__label-wrap">
                                 <span class="field__label">Ngày</span>
                             </span>
                         </label>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <div class="col-12">
-                        <label class="field field_v2 width_100">
-                            <input id="ctkh_yeucau_edit" class="field__input" placeholder="Vui lòng nhập Yêu cầu">
-                            <span class="field__label-wrap">
-                                <span class="field__label">Yêu cầu</span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-12">
-                        <label class="field field_v2 width_100">
-                            <input id="ctkh_gia_edit" class="field__input" onkeyup="this.value = this.value.replace(/[^0-9\.\,-]/g,'');_ChangeFormat(this)" type="text" placeholder="Vui lòng nhập Giá">
-                            <span class="field__label-wrap">
-                                <span class="field__label">Giá</span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-12">
-                        <label class="field field_v2 width_100">
-                            <input id="ctkh_note_edit" class="field__input" placeholder="Vui lòng nhập Ghi chú">
-                            <span class="field__label-wrap">
-                                <span class="field__label">Ghi chú</span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-12">
-                        <label class="field field_v2 width_100">
-                            <input id="ctkh_link_edit" class="field__input" placeholder="Vui lòng nhập Link tài liệu">
-                            <span class="field__label-wrap">
-                                <span class="field__label">Link tài liệu</span>
-                            </span>
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-12">
-                        <select class="form-control" id="trangthai_ctkh_edit">
-                            <option value="">Chọn Trạng thái</option>
-                            <?php
-                            foreach ($list_trangthai_ctkh as $r) { ?>
-                                <option value="<?= $r->msloai ?>"><?= $r->giatri ?></option>
-                            <?php }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="col-12">
                     <div class="control_btn">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button style="margin-left: 5px;" type="button" onclick="ccv_chitiet_edit()" class="btn btn-success">Lưu</button>
+                        <button style="margin-left: 5px;" type="button" onclick="ccv_edit_chitiet()" class="btn btn-success">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -555,6 +540,12 @@
 <script>
     $(document).ready(function() {
         ccv_load()
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        ccv_load_chitiet()
     });
 </script>
 <script src="vendor/js/ccv.js?v=<?= md5_file('vendor/js/ccv.js') ?>"></script>

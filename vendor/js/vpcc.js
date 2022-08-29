@@ -101,3 +101,25 @@ vpcc_edit = () => {
     }
   );
 };
+
+// Lọc vpcc
+
+function vpcc_filter() {
+  var TEN_VPCC = $("#tenvpcc_search").val(),
+    sodienthoai = $("#dienthoai_search").val(),
+    tungay = $("#tungay").val(),
+    denngay = $("#denngay").val();
+  $.post(
+    "ajax/vpcc/vpcc_filter.php",
+    {
+      TEN_VPCC: TEN_VPCC,
+      sodienthoai: sodienthoai,
+      tungay: tungay,
+      denngay: denngay,
+    },
+    function (data, textStatus, jqXHR) {
+      console.log(data);
+      $(".vpcc_tbody").html(data);
+    }
+  );
+}

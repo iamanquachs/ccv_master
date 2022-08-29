@@ -16,7 +16,16 @@ class VPCC extends database
         $getall->execute();
         return $getall->fetchAll();
     }
-    //todo lấy danh sách trạng thái
+    // Filter danh sách VPCC
+    public function vpcc_filter($TEN_VPCC, $sodienthoai, $tungay, $denngay)
+    {
+        $getall = $this->connect->prepare("SELECT * from vanphongcongchung where TEN_VPCC='$TEN_VPCC' or sodienthoai='$sodienthoai' or NGAYTHANHLAP_VPCC between '$tungay' and '$denngay' ");
+        $getall->setFetchMode(PDO::FETCH_OBJ);
+        $getall->execute();
+        return $getall->fetchAll();
+    }
+
+    //Lấy danh sách trạng thái
     public function list_trangthai($id_vpcc)
     {
         $getall = $this->connect->prepare("SELECT msloai,giatri from dmphanloai where id_vpcc='$id_vpcc' and phanloai='trangthaiccv' order by msloai");
@@ -24,7 +33,7 @@ class VPCC extends database
         $getall->execute();
         return $getall->fetchAll();
     }
-    //todo lấy danh sách trạng thái chi tiết khách hàng
+    //Lấy danh sách trạng thái chi tiết khách hàng
     public function list_trangthai_ctkh($id_vpcc)
     {
         $getall = $this->connect->prepare("SELECT msloai,giatri from dmphanloai where id_vpcc='$id_vpcc' and phanloai='trangthai_ctkh'  order by msloai");
@@ -32,7 +41,7 @@ class VPCC extends database
         $getall->execute();
         return $getall->fetchAll();
     }
-    //todo lấy danh sách lý do
+    //Lấy danh sách lý do
     public function list_lydo($id_vpcc)
     {
         $getall = $this->connect->prepare("SELECT msloai,giatri from dmphanloai where id_vpcc='$id_vpcc' and phanloai='lydoccv'");

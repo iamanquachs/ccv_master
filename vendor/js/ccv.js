@@ -36,6 +36,16 @@ function ccv_load() {
     $(".ccv_tbody").html(data);
   });
 }
+//Lấy danh sách chi tiết
+function ccv_load_chitiet() {
+  $.post(
+    "ajax/ccv/ccv_load_chitiet.php",
+    {},
+    function (data, textStatus, jqXHR) {
+      $(".chitiet_ccv_tbody").html(data);
+    }
+  );
+}
 
 //Xóa
 function open_ccv_delete(e) {
@@ -93,6 +103,85 @@ ccv_edit = () => {
     },
     function (data, textStatus, jqXHR) {
       $("#form_edit").modal("hide");
+    }
+  );
+};
+// Chỉnh sửa chi tiết
+open_ccv_edit_chitiet = (e) => {
+  $("#msccv_chitiet_td").val($(e).parent().find(".msccv_chitiet_td").text());
+  $("#tenccv_chitiet_td").val($(e).parent().find(".tenccv_chitiet_td").text());
+  $("#khenthuong_chitiet_td").val(
+    $(e).parent().find(".khenthuong_chitiet_td").text()
+  );
+  $("#kyluat_chitiet_td").val($(e).parent().find(".kyluat_chitiet_td").text());
+  $("#loaikyluat_chitiet_td").val(
+    $(e).parent().find(".loaikyluat_chitiet_td").text()
+  );
+  $("#hoiphi_chitiet_td").val($(e).parent().find(".hoiphi_chitiet_td").text());
+  $("#ngay_chitiet_td").val($(e).parent().find(".ngay_chitiet_td").text());
+};
+ccv_edit_chitiet = () => {
+  var id_msccv = $("#msccv_chitiet_td").val(),
+    tenccv = $("#tenccv_chitiet_td").val(),
+    khenthuong = $("#khenthuong_chitiet_td").val(),
+    kyluat = $("#kyluat_chitiet_td").val(),
+    loaikyluat = $("#loaikyluat_chitiet_td").val(),
+    hoiphi = $("#hoiphi_chitiet_td").val(),
+    ngay = $("#ngay_chitiet_td").val();
+  $.post(
+    "ajax/ccv/ccv_edit_chitiet.php",
+    {
+      id_msccv: id_msccv,
+      tenccv: tenccv,
+      khenthuong: khenthuong,
+      kyluat: kyluat,
+      loaikyluat: loaikyluat,
+      hoiphi: hoiphi,
+      ngay: ngay,
+    },
+    function (data, textStatus, jqXHR) {
+      $("#form_chitiet_edit").modal("hide");
+    }
+  );
+};
+
+// Lọc ccv
+
+function ccv_filter() {
+  var tenccv = $("#tenccv_search").val(),
+    dienthoai = $("#dienthoai_search").val(),
+    tungay = $("#tungay").val(),
+    denngay = $("#denngay").val();
+  $.post(
+    "ajax/ccv/ccv_filter.php",
+    {
+      tenccv: tenccv,
+      dienthoai: dienthoai,
+      tungay: tungay,
+      denngay: denngay,
+    },
+    function (data, textStatus, jqXHR) {
+      $(".ccv_tbody").html(data);
+    }
+  );
+}
+
+//! Chi tiết khách hàng
+chitiet_ccv_load = (id_msccv, tenccv, e) => {
+  $(".ccv_tr").removeClass("active");
+  try {
+    e.classList.add("active");
+  } catch (error) {}
+  $("#ctkh_id_msccv").val(id_msccv);
+  $("#ctkh_tenccv").val(tenccv);
+  $.post(
+    "ajax/ccv/chitiet_ccv_load.php",
+    {
+      id_msccv: id_msccv,
+    },
+    function (data, textStatus, jqXHR) {
+      $(".chitiet_ccv_tbody").html(data);
+      $("#btn_add_chitiet").removeClass("hidden");
     }
   );
 };
