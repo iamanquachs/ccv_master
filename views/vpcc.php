@@ -35,7 +35,7 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
+                                        <th>ID VPCC</th>
                                         <th>Tên tổ chức</th>
                                         <th>Địa chỉ</th>
                                         <th>Số điện thoại</th>
@@ -55,26 +55,25 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <div class="card-header py-3 card_header_ccv">
-                        <h6 class="m-0 font-weight-bold text-primary">Hoạt động tổ chức công chứng</h6>
-                        <button id="btn_add_chitiet" data-toggle="modal" data-target="#form_chitiet_add" class="btn btn-info hidden">Thêm nhật ký</button>
+                    <div class="card-header py-3 card_header_vpcc">
+                        <h6 id='ten_vpcc_h6' class="m-0 font-weight-bold text-primary">Hoạt động tổ chức công chứng</h6>
+                        <input type="hidden" id="chitiet_id_vpcc_td">
+                        <!-- <button id="btn_add_chitiet" data-toggle="modal" data-target="#form_chitiet_add" class="btn btn-info hidden">Thêm nhật ký</button> -->
                     </div>
-                    <div class="card-body card_body_ccv">
-                        <div id="ccv_table_line" class="table-responsive">
+                    <div class="card-body card_body_vpcc">
+                        <div id="vpcc_table_line" class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>ID văn phòng công chứng</th>
-                                        <th>Tên đã thay đổi</th>
-                                        <th>Địa chỉ đã thay đổi</th>
-                                        <th>Ngày thay đổi tên</th>
-                                        <th>Ngày thay đổi địa chỉ</th>
-                                        <th>Chỉnh</th>
-                                        <th>Xóa</th>
+                                        <th>ID VPCC</th>
+                                        <th>Tên hiện tại</th>
+                                        <th>Tên trước đó</th>
+                                        <th>Địa chỉ trước đó</th>
+                                        <th>Số điện thoại trước đó</th>
+                                        <th>Ngày thay đổi</th>
                                     </tr>
                                 </thead>
-                                <tbody class="chitiet_ccv_tbody">
+                                <tbody class="chitiet_vpcc_tbody">
                                 </tbody>
                             </table>
                         </div>
@@ -99,6 +98,16 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input type="text" id="idvpcc_add" class="field__input" placeholder="Vui lòng nhập ID tổ chức công chứng" required>
+                            <span class="field__label-wrap">
+                                <span class="field__label">ID tổ chức công chứng</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
@@ -182,7 +191,7 @@
                 <div class="col-12">
                     <div class="control_btn">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button style="margin-left: 5px;" type="button" onclick="vpcc_add()" class="btn btn-success">Lưu</button>
+                        <button style="margin-left: 5px;" type="button" onclick="vpcc_add(), vpcc_chitiet_add()" class="btn btn-success">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -285,7 +294,7 @@
                 <div class="col-12">
                     <div class="control_btn">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button style="margin-left: 5px;" type="button" onclick="vpcc_edit()" class="btn btn-success">Lưu</button>
+                        <button style="margin-left: 5px;" type="button" onclick="vpcc_edit(), vpcc_chitiet_add_edit(), vpcc_delete_chitiet_cu()" class="btn btn-success">Lưu</button>
                     </div>
                 </div>
             </div>

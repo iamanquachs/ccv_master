@@ -1,6 +1,7 @@
 // Thêm mới
 function vpcc_add() {
   var TEN_VPCC = $("#tenvpcc_add").val(),
+    ID_VPCC = $("#idvpcc_add").val(),
     diachi = $("#diachi_add").val(),
     sodienthoai = $("#dienthoai_add").val(),
     email = $("#emailvpcc_add").val(),
@@ -13,6 +14,7 @@ function vpcc_add() {
     "ajax/vpcc/vpcc_add.php",
     {
       TEN_VPCC: TEN_VPCC,
+      ID_VPCC: ID_VPCC,
       diachi: diachi,
       sodienthoai: sodienthoai,
       email: email,
@@ -24,6 +26,7 @@ function vpcc_add() {
     function (data, textStatus, jqXHR) {
       $(
         "#tenvpcc_add",
+        "#idvpcc_add",
         "#diachi_add",
         "#dienthoai_add",
         "#emailvpcc_add",
@@ -36,6 +39,7 @@ function vpcc_add() {
     }
   );
 }
+
 // Hiển thị
 function vpcc_load() {
   $.post("ajax/vpcc/vpcc_load.php", {}, function (data, textStatus, jqXHR) {
@@ -43,6 +47,7 @@ function vpcc_load() {
     $(".vpcc_tbody").html(data);
   });
 }
+
 // Xóa
 function open_vpcc_delete(e) {
   $("#vpcc_delete").val($(e).parent().find(".idvpcc_td").text());
@@ -61,6 +66,7 @@ function vpcc_delete() {
     }
   );
 }
+
 // Chỉnh sửa
 open_vpcc_edit = (e) => {
   $("#id_vpcc").val($(e).parent().find(".idvpcc_td").text());
@@ -103,7 +109,6 @@ vpcc_edit = () => {
 };
 
 // Lọc vpcc
-
 function vpcc_filter() {
   var TEN_VPCC = $("#tenvpcc_search").val(),
     sodienthoai = $("#dienthoai_search").val(),
@@ -120,6 +125,86 @@ function vpcc_filter() {
     function (data, textStatus, jqXHR) {
       console.log(data);
       $(".vpcc_tbody").html(data);
+    }
+  );
+}
+
+//--------------------------------------------------------Hoạt động VPCC---------------------------------
+function vpcc_load_chitiet(e) {
+  var ID_VPCC = $(e).find(".idvpcc_td").text(),
+    ten_vpcc = $(e).find(".tenvpcc_td").text();
+  document.getElementById("ten_vpcc_h6").innerText =
+    "Hoạt động tổ chức công chứng: " + ten_vpcc;
+  $("#chitiet_id_vpcc_td").val(ID_VPCC);
+  $.post(
+    "ajax/vpcc/vpcc_load_chitiet.php",
+    { ID_VPCC: ID_VPCC },
+    function (data, textStatus, jqXHR) {
+      $(".chitiet_vpcc_tbody").html(data);
+    }
+  );
+}
+//Thêm mới chi tiết
+function vpcc_chitiet_add() {
+  var id_vpcc = $("#idvpcc_add").val(),
+    ten_hientai = $("#tenvpcc_add").val(),
+    ten_truocdo = $("#ten_truocdo_add").val(),
+    diachi_cu = $("#diachi_add").val(),
+    sdt_cu = $("#dienthoai_add").val();
+  ngay = $("#ngay_add").val();
+  $.post(
+    "ajax/vpcc/vpcc_chitiet_add.php",
+    {
+      id_vpcc: id_vpcc,
+      ten_hientai: ten_hientai,
+      ten_truocdo: ten_truocdo,
+      diachi_cu: diachi_cu,
+      sdt_cu: sdt_cu,
+      ngay: ngay,
+    },
+    function (data, textStatus, jqXHR) {
+      $(
+        "#idvpcc_add, #ten_hientai_add, #ten_truocdo_add,#diachi_cu_add,#diachi_cu_add, #sdt_cu_add, #ngay_add"
+      ).val("");
+      $("#form_chitiet_add").modal("hide");
+    }
+  );
+}
+
+//Thêm mới chi tiết chỉnh sửa
+function vpcc_chitiet_add_edit() {
+  var id_vpcc = $("#id_vpcc").val(),
+    ten_hientai = $("#tentc_edit").val(),
+    ten_truocdo = $("#ten_truocdo_edit").val(),
+    diachi_cu = $("#diachi_edit").val(),
+    sdt_cu = $("#sodienthoai_edit").val();
+  ngay = $("#ngay_edit").val();
+  $.post(
+    "ajax/vpcc/vpcc_chitiet_add.php",
+    {
+      id_vpcc: id_vpcc,
+      ten_hientai: ten_hientai,
+      ten_truocdo: ten_truocdo,
+      diachi_cu: diachi_cu,
+      sdt_cu: sdt_cu,
+      ngay: ngay,
+    },
+    function (data, textStatus, jqXHR) {
+      $(
+        "#id_vpcc, #tentc_edit, #ten_truocdo_edit,#diachi_edit,#sodienthoai_edit, #ngay_edit"
+      ).val("");
+      $("#form_edit").modal("hide");
+    }
+  );
+}
+//Xóa chi tiết cũ
+function vpcc_delete_chitiet_cu() {
+  var ID_VPCC = $("#id_vpcc").val();
+  $.post(
+    "ajax/vpcc/vpcc_delete_chitiet_cu.php",
+    { ID_VPCC: ID_VPCC },
+    function (data, textStatus, jqXHR) {
+      $("#form_edit").modal("hide");
     }
   );
 }

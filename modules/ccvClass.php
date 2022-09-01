@@ -9,6 +9,14 @@ class CCV extends database
         $getall->execute();
     }
 
+    //ccv thêm mới chi tiết
+    public function ccv_chitiet_add($tenccv, $id_msccv, $id_vpcc, $ngay, $khenthuong, $kyluat, $loaikyluat, $hoiphi)
+    {
+        $getall = $this->connect->prepare("INSERT INTO ccvhoatdong(tenccv,id_msccv, id_vpcc, ngay, khenthuong,kyluat,loaikyluat,hoiphi) 
+        VALUES ('$tenccv','$id_msccv','$id_vpcc','$ngay','$khenthuong','$kyluat','$loaikyluat','$hoiphi')");
+        $getall->execute();
+    }
+
     // filter danh sách ccv
     public function ccv_filter($tenccv, $dienthoai, $tungay, $denngay)
     {
@@ -29,42 +37,11 @@ class CCV extends database
     }
     //ccv lấy danh sách chi tiết
 
-    public function ccv_load_chitiet($id_vpcc)
+    public function ccv_load_chitiet($id_vpcc, $id_msccv)
     {
         $getall = $this->connect->prepare("SELECT a.id_msccv, a.tenccv, b.khenthuong, b.kyluat, b.loaikyluat, b.hoiphi, b.ngay from ccv a left join ccvhoatdong b 
         on a.id_vpcc = b.id_vpcc and a.id_msccv = b.id_msccv 
-        where a.id_vpcc='1' order by a.id_msccv DESC");
-        $getall->setFetchMode(PDO::FETCH_OBJ);
-        $getall->execute();
-        return $getall->fetchAll();
-    }
-    //todo lấy danh sách trạng thái
-    public function list_trangthai($id_vpcc)
-    {
-        $getall = $this->connect->prepare("SELECT msloai,giatri from dmphanloai where id_vpcc='$id_vpcc' and phanloai='trangthaiccv' order by msloai");
-        $getall->setFetchMode(PDO::FETCH_OBJ);
-        $getall->execute();
-        return $getall->fetchAll();
-    }
-    //todo lấy danh sách trạng thái chi tiết khách hàng
-    public function list_trangthai_ctkh($id_vpcc)
-    {
-        $getall = $this->connect->prepare("SELECT msloai,giatri from dmphanloai where id_vpcc='$id_vpcc' and phanloai='trangthai_ctkh'  order by msloai");
-        $getall->setFetchMode(PDO::FETCH_OBJ);
-        $getall->execute();
-        return $getall->fetchAll();
-    }
-    //todo lấy danh sách lý do
-    public function list_lydo($id_vpcc)
-    {
-        $getall = $this->connect->prepare("SELECT msloai,giatri from dmphanloai where id_vpcc='$id_vpcc' and phanloai='lydoccv'");
-        $getall->setFetchMode(PDO::FETCH_OBJ);
-        $getall->execute();
-        return $getall->fetchAll();
-    }
-    public function list_user($id_vpcc)
-    {
-        $getall = $this->connect->prepare("SELECT msdn, hoten FROM hosonhanvien where id_vpcc='$id_vpcc' ");
+        where a.id_vpcc='$id_vpcc' and a.id_msccv= '$id_msccv'");
         $getall->setFetchMode(PDO::FETCH_OBJ);
         $getall->execute();
         return $getall->fetchAll();
@@ -83,7 +60,7 @@ class CCV extends database
         ,email='$email',noihanhnghe='$noihanhnghe', trangthai='$trangthai' where id_msccv = '$id_msccv'");
         $getall->execute();
     }
-    // Chỉnh sửa
+    // Chỉnh sửa chi tiết
     public function ccv_edit_chitiet($id_msccv, $tenccv, $khenthuong, $kyluat, $loaikyluat, $hoiphi, $ngay)
     {
         $getall = $this->connect->prepare("UPDATE ccvhoatdong set id_msccv='$id_msccv' tenccv='$tenccv',khenthuong='$khenthuong',kyluat='$kyluat',loaikyluat='$loaikyluat',hoiphi='$hoiphi'

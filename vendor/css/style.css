@@ -77,9 +77,9 @@
   padding: 10px 10px !important;
 }
 
-/* .ccv_tbody tr:hover {
+.ccv_tbody tr:hover {
   cursor: pointer;
-} */
+}
 
 .isCusor{
   cursor: pointer;
@@ -117,12 +117,12 @@
   padding: 10px 10px !important;
 }
 
-/* .vpcc_tbody tr:hover {
+.vpcc_tbody tr:hover {
   cursor: pointer;
-} */
-/* #vpcc_table_header {
+}
+#vpcc_table_header {
   max-height: 270px;
-} */
+}
 
 .datepicker_vpcc {
   width: 110px;

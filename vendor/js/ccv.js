@@ -29,6 +29,32 @@ function ccv_add() {
       }
     );
 }
+//Thêm mới chi tiết
+function ccv_add_chitiet() {
+  var tenccv = $("#tenccv_add").val(),
+    khenthuong = $("#khenthuong_add").val(),
+    kyluat = $("#kyluat_add").val(),
+    loaikyluat = $("#loaikyluat_add").val(),
+    hoiphi = $("#hoiphi_add").val(),
+    ngay = $("#ngay_add").val();
+  $.post(
+    "ajax/ccv/ccv_add_chitiet.php",
+    {
+      tenccv: tenccv,
+      khenthuong: khenthuong,
+      kyluat: kyluat,
+      loaikyluat: loaikyluat,
+      hoiphi: hoiphi,
+      ngay: ngay,
+    },
+    function (data, textStatus, jqXHR) {
+      $(
+        "#tenccv_add, #khenthuong_add, #kyluat_add, #loaikyluat_add, #hoiphi_add, #ngay_add"
+      ).val("");
+      $("#form_add").modal("hide");
+    }
+  );
+}
 
 //Lấy danh sách
 function ccv_load() {
@@ -166,22 +192,50 @@ function ccv_filter() {
   );
 }
 
-//! Chi tiết khách hàng
-chitiet_ccv_load = (id_msccv, tenccv, e) => {
-  $(".ccv_tr").removeClass("active");
-  try {
-    e.classList.add("active");
-  } catch (error) {}
-  $("#ctkh_id_msccv").val(id_msccv);
-  $("#ctkh_tenccv").val(tenccv);
+//--------------------------------------------------------Hoạt động CCV---------------------------------
+function ccv_chitiet_load(e) {
+  var id_msccv = $(e).find(".msccv_td").text(),
+    ten_ccv = $(e).find(".tenccv_td").text();
+  document.getElementById("tenccv_h6").innerText =
+    "Hoạt động Công chứng viên: " + ten_ccv;
+  $("#chitiet_msccv_td").val(id_msccv);
   $.post(
-    "ajax/ccv/chitiet_ccv_load.php",
-    {
-      id_msccv: id_msccv,
-    },
+    "ajax/ccv/ccv_load_chitiet.php",
+    { id_msccv: id_msccv },
     function (data, textStatus, jqXHR) {
       $(".chitiet_ccv_tbody").html(data);
-      $("#btn_add_chitiet").removeClass("hidden");
     }
   );
-};
+}
+//Thêm mới chi tiết
+function open_ccv_add_chitiet(e) {
+  $("#id_msccv").val($(e).parent().find(".msccv_chitiet_td").text());
+  $("#tenccv").val($(e).parent().find(".tenccv_chitiet_td").text());
+}
+function ccv_chitiet_add() {
+  var tenccv = $("#tenccv").val(),
+    id_msccv = $("#id_msccv").val(),
+    khenthuong = $("#khenthuong_add").val(),
+    kyluat = $("#kyluat_add").val(),
+    loaikyluat = $("#loaikyluat_add").val(),
+    hoiphi = $("#hoiphi_add").val(),
+    ngay = $("#ngay_add").val();
+  $.post(
+    "ajax/ccv/ccv_chitiet_add.php",
+    {
+      tenccv: tenccv,
+      id_msccv: id_msccv,
+      khenthuong: khenthuong,
+      kyluat: kyluat,
+      loaikyluat: loaikyluat,
+      hoiphi: hoiphi,
+      ngay: ngay,
+    },
+    function (data, textStatus, jqXHR) {
+      $(
+        "#tenccv, #id_msccv, #khenthuong_add, #kyluat_add, #loaikyluat_add, #hoiphi_add, #ngay_add"
+      ).val("");
+      $("#form_chitiet_add").modal("hide");
+    }
+  );
+}

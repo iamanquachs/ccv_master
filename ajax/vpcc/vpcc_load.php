@@ -4,12 +4,12 @@ include('../../includes/database.php');
 require('../../modules/vpccClass.php');
 
 $db_vpcc = new VPCC();
-// $ID_VPCC = $_COOKIE['ID_VPCC'];
+// $ID_VPCC = $_POST['ID_VPCC'];
 $ID_ADMIN = $_COOKIE['ID_ADMIN'];
 $danhsach_vpcc = $db_vpcc->vpcc_load($ID_ADMIN);
 $stt = 1;
 foreach ($danhsach_vpcc as $r) { ?>
-    <tr>
+    <tr onclick="vpcc_load_chitiet(this)">
         <td class="idvpcc_td"><?= $r->ID_VPCC ?></td>
         <td class="tenvpcc_td"><?= $r->TEN_VPCC ?></td>
         <td class="diachi_td"><?= $r->diachi ?></td>

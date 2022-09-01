@@ -7,7 +7,7 @@ $id_vpcc = $_COOKIE['ID_VPCC'];
 $danhsach_ccv = $db_ccv->ccv_load($id_vpcc);
 $stt = 1;
 foreach ($danhsach_ccv as $r) { ?>
-    <tr>
+    <tr class="isCusor" onclick="ccv_chitiet_load(this)">
         <!-- <td><?= $stt ?></td> -->
         <td class="msccv_td"><?= $r->id_msccv ?></td>
         <td class="tenccv_td"><?= $r->tenccv ?></td>

@@ -4,8 +4,8 @@ include('../../includes/database.php');
 require('../../modules/ccvClass.php');
 $db_ccv = new CCV();
 $id_vpcc = $_COOKIE['ID_VPCC'];
-$danhsach_ccv = $db_ccv->ccv_load_chitiet($id_vpcc);
-$stt = 1;
+$id_msccv = $_POST['id_msccv'];
+$danhsach_ccv = $db_ccv->ccv_load_chitiet($id_vpcc, $id_msccv);
 foreach ($danhsach_ccv as $r) { ?>
     <tr>
         <!-- <td><?= $stt ?></td> -->
@@ -17,8 +17,8 @@ foreach ($danhsach_ccv as $r) { ?>
         <td class="loaikyluat_chitiet_td"><?= $r->loaikyluat ?></td>
         <td class="hoiphi_chitiet_td"><?= $r->hoiphi ?></td>
         <td class="ngay_chitiet_td"><?= date('d/m/y H:i', strtotime($r->ngay)) ?></td>
-        <td class="isCusor" onclick="open_ccv_edit_chitiet(this)" data-target="#form_chitiet_edit" data-toggle="modal"><i class="far fa-edit"></i></td>
+        <td class="isCusor" onclick="open_ccv_add_chitiet(this)" data-target="#form_chitiet_add" data-toggle="modal"><i class="far fa-edit"></i></td>
 
     </tr>
-<?php $stt++;
+<?php
 }

@@ -59,8 +59,9 @@
                 </div>
                 <div class="col-12">
                     <div class="card-header py-3 card_header_ccv">
-                        <h6 class="m-0 font-weight-bold text-primary">Hoạt động Công chứng viên</h6>
-                        <button id="btn_add_chitiet" data-toggle="modal" data-target="#form_chitiet_add" class="btn btn-info hidden">Thêm hoạt động</button>
+                        <h6 id="tenccv_h6" class="m-0 font-weight-bold text-primary">Hoạt động Công chứng viên</h6>
+                        <input type="hidden" id="chitiet_msccv_td">
+                        <!-- <button id="btn_add_chitiet" data-toggle="modal" data-target="#form_chitiet_add" class="btn btn-info" onclick="open_ccv_add_chitiet(this)">Thêm hoạt động</button> -->
                     </div>
                     <div class="card-body card_body_ccv">
                         <div id="ccv_table_line" class="table-responsive">
@@ -189,7 +190,7 @@
                 <div class="col-12">
                     <div class="control_btn">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <button style="margin-left: 5px;" type="button" onclick="ccv_add()" class="btn btn-success">Lưu</button>
+                        <button style="margin-left: 5px;" type="button" onclick="ccv_add(), ccv_add_chitiet()" class="btn btn-success">Lưu</button>
                     </div>
                 </div>
             </div>
@@ -326,9 +327,6 @@
         <div class="modal-content">
             <div style="padding:10px" class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Đồng ý xóa?</h5>
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button> -->
             </div>
             <div class="modal-body">
                 <p style="margin: 0;margin-left: 10px;" id="ccv_delete"></p>
@@ -356,9 +354,27 @@
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
-                            <input type="hidden" id="ctkh_mskh">
-                            <input type="hidden" id="ctkh_tenkh">
-                            <input id="ctkh_ngay_add" value="<?= date('d/m/Y') ?>" class="field__input txt_date" data-date-format="dd-mm-yy" type="text" placeholder="Ngày" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask="" im-insert="false">
+                            <input id="tenccv" class="field__input" placeholder="Vui lòng nhập Khen thưởng">
+                            <span class="field__label-wrap">
+                                <span class="field__label">Tên Công chứng viên</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input id="id_msccv" class="field__input" placeholder="Vui lòng nhập Khen thưởng">
+                            <span class="field__label-wrap">
+                                <span class="field__label">Mã số Công chứng viên</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-12">
+                        <label class="field field_v2 width_100">
+                            <input id="ngay_add" value="<?= date('d/m/Y') ?>" class="field__input txt_date" data-date-format="dd-mm-yy" type="text" placeholder="Ngày" data-inputmask-alias="datetime" data-inputmask-inputformat="dd-mm-yyyy" data-mask="" im-insert="false">
                             <span class="field__label-wrap">
                                 <span class="field__label">Ngày</span>
                             </span>
@@ -369,9 +385,9 @@
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
-                            <input id="ctkh_yeucau_add" class="field__input" placeholder="Vui lòng nhập Yêu cầu">
+                            <input id="khenthuong_add" class="field__input" placeholder="Vui lòng nhập Khen thưởng">
                             <span class="field__label-wrap">
-                                <span class="field__label">Yêu cầu</span>
+                                <span class="field__label">Khen thưởng</span>
                             </span>
                         </label>
                     </div>
@@ -379,9 +395,9 @@
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
-                            <input id="ctkh_gia_add" class="field__input" onkeyup="this.value = this.value.replace(/[^0-9\.\,-]/g,'');_ChangeFormat(this)" type="text" placeholder="Vui lòng nhập Giá">
+                            <input id="hoiphi_add" class="field__input" onkeyup="this.value = this.value.replace(/[^0-9\.\,-]/g,'');_ChangeFormat(this)" type="text" placeholder="Vui lòng nhập Giá">
                             <span class="field__label-wrap">
-                                <span class="field__label">Giá</span>
+                                <span class="field__label">Hội phí</span>
                             </span>
                         </label>
                     </div>
@@ -389,9 +405,9 @@
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
-                            <input id="ctkh_note_add" class="field__input" placeholder="Vui lòng nhập Ghi chú">
+                            <input id="kyluat_add" class="field__input" placeholder="Vui lòng nhập Kỷ luật">
                             <span class="field__label-wrap">
-                                <span class="field__label">Ghi chú</span>
+                                <span class="field__label">Kỷ luật</span>
                             </span>
                         </label>
                     </div>
@@ -399,26 +415,13 @@
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
-                            <input id="ctkh_link_add" class="field__input" placeholder="Vui lòng nhập Link tài liệu">
+                            <input id="loaikyluat_add" class="field__input" placeholder="Vui lòng nhập Loại kỷ luật">
                             <span class="field__label-wrap">
-                                <span class="field__label">Link tài liệu</span>
+                                <span class="field__label">Loại kỷ luật</span>
                             </span>
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-12">
-                        <select class="form-control" id="trangthai_ctkh_add">
-                            <option value="">Chọn Trạng thái</option>
-                            <?php
-                            foreach ($list_trangthai_ctkh as $r) { ?>
-                                <option value="<?= $r->msloai ?>"><?= $r->giatri ?></option>
-                            <?php }
-                            ?>
-                        </select>
-                    </div>
-                </div>
-
                 <div class="col-12">
                     <div class="control_btn">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
@@ -440,6 +443,7 @@
                 </button>
             </div>
             <div class="modal-body">
+                <p style="margin: 0;margin-left: 10px;" id="msccv_chitiet_td"></p>
                 <div class="form-group">
                     <div class="col-12">
                         <label class="field field_v2 width_100">
@@ -543,9 +547,4 @@
     });
 </script>
 
-<script>
-    $(document).ready(function() {
-        ccv_load_chitiet()
-    });
-</script>
 <script src="vendor/js/ccv.js?v=<?= md5_file('vendor/js/ccv.js') ?>"></script>
